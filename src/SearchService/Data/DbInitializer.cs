@@ -13,23 +13,14 @@ public class DbInitializer
       .Key(x => x.Color, KeyType.Text)
       .CreateAsync();
 
-    var count = await DB.CountAsync<Item>();
+    using var scope = app.Services.CreateScope();
 
-    if (count == 0) 
-    {
-      Console.WriteLine("No Data - Will attempt to seed");
-      SeedData();
-    }
-  }
+    var httpClient = scope.ServiceProvider.GetRequiredService<AuctionServiceHttpClient>();
 
-  private static async void SeedData()
-  {
-    var itemData = await File.ReadAllTextAsync("Data/auctions.json");
+    var items = await httpClient.GetItemsForSearchDb();
 
-    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+    Console.WriteLine(items.Count + " returned from the auction service");
 
-    var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
-
-    await DB.SaveAsync(items);
+    if (items.Count > 0) await DB.SaveAsync(items);
   }
 }
