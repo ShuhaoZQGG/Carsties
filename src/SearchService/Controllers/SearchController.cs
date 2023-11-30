@@ -10,7 +10,7 @@ public class SearchController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<List<Item>>> SearchItems([FromQuery] SearchParams searchParams) 
   {
-    var searchTerm = searchParams.searchTearm;
+    var searchTerm = searchParams.searchTerm;
     var pageNumber = searchParams.PageNumber;
     var pageSize = searchParams.PageSize;
     var winner = searchParams.Winner;
