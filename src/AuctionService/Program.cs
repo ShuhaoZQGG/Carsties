@@ -1,3 +1,4 @@
+using AuctionService;
 using AuctionService.Consumers;
 using AuctionService.Data;
 using MassTransit;
@@ -46,6 +47,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     opt.TokenValidationParameters.ValidateAudience = false;
     opt.TokenValidationParameters.NameClaimType = "username";
   });
+
+builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 
 var app = builder.Build();
 
