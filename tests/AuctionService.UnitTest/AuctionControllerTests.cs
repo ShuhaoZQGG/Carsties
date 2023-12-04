@@ -133,9 +133,8 @@ public class AuctionControllerTests
   public async Task UpdateAuction_WithSellerNull_ReturnsForbidden() 
   {
     // Arrange
-    var createAuctionDto = _fixture.Create<CreateAuctionDto>();
-    var auction = _mapper.Map<Auction>(createAuctionDto);
-    var updatedAuction = _mapper.Map<UpdateAuctionDto>(createAuctionDto);
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
+    var updatedAuction = _fixture.Create<UpdateAuctionDto>();
     _repo.Setup(repo => repo.GetAuctionEntityByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
     _repo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
 
@@ -152,9 +151,10 @@ public class AuctionControllerTests
   public async Task UpdateAuction_WithResultFalse_ReturnsBadRequestObjectResult() 
   {
     // Arrange
-    var createAuctionDto = _fixture.Create<CreateAuctionDto>();
-    var auction = _mapper.Map<Auction>(createAuctionDto);
-    var updatedAuction = _mapper.Map<UpdateAuctionDto>(createAuctionDto);
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
+    var item = _fixture.Build<Item>().Without(x => x.Auction).Create();
+    auction.Item = item;
+    var updatedAuction = _fixture.Create<UpdateAuctionDto>();
     auction.Seller = "test";
     _repo.Setup(repo => repo.GetAuctionEntityByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
     _repo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(false);
@@ -172,9 +172,10 @@ public class AuctionControllerTests
   public async Task UpdateAuction_WithValidIdAndUpdateAuctionDto_ReturnsOk() 
   {
     // Arrange
-    var createAuctionDto = _fixture.Create<CreateAuctionDto>();
-    var auction = _mapper.Map<Auction>(createAuctionDto);
-    var updatedAuction = _mapper.Map<UpdateAuctionDto>(createAuctionDto);
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
+    var item = _fixture.Build<Item>().Without(x => x.Auction).Create();
+    auction.Item = item;
+    var updatedAuction = _fixture.Create<UpdateAuctionDto>();
     auction.Seller = "test";
     _repo.Setup(repo => repo.GetAuctionEntityByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
     _repo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
@@ -206,8 +207,7 @@ public class AuctionControllerTests
   public async Task DeleteAuction_WithResultFalse_ReturnsBadRequest() 
   {
     // Arrange
-    var createAuctionDto = _fixture.Create<CreateAuctionDto>();
-    var auction = _mapper.Map<Auction>(createAuctionDto);
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
     auction.Seller = "test";
     _repo.Setup(repo => repo.GetAuctionEntityByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
     _repo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(false);
@@ -225,8 +225,7 @@ public class AuctionControllerTests
   public async Task RemoveAuction_WithSellerNull_ReturnsForbidden() 
   {
     // Arrange
-    var createAuctionDto = _fixture.Create<CreateAuctionDto>();
-    var auction = _mapper.Map<Auction>(createAuctionDto);
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
     _repo.Setup(repo => repo.GetAuctionEntityByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
     _repo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
 
@@ -243,8 +242,7 @@ public class AuctionControllerTests
   public async Task DeleteAuction_WithValidIdAndAuctionDto_ReturnsOk() 
   {
     // Arrange
-    var createAuctionDto = _fixture.Create<CreateAuctionDto>();
-    var auction = _mapper.Map<Auction>(createAuctionDto);
+    var auction = _fixture.Build<Auction>().Without(x => x.Item).Create();
     auction.Seller = "test";
     _repo.Setup(repo => repo.GetAuctionEntityByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
     _repo.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
