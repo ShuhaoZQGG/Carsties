@@ -1,4 +1,5 @@
 ﻿using AuctionService.Data;
+using AuctionService.IntegrationTest;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -6,33 +7,45 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
+using WebMotions.Fake.Authentication.JwtBearer;
 
-namespace AuctionService.IntegrationTest;
+namespace AuctionService.IntegrationTests;
+
 public class CustomWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-  private PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder().Build();
-  public async Task InitializeAsync()
-  {
-    await _postgreSqlContainer.StartAsync();
-  }
+    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder().Build();
 
-  protected override void ConfigureWebHost(IWebHostBuilder builder)
-  {
-    // Remove AuctionDbContext in AuctionService, and replace with the test one.
-    builder.ConfigureTestServices(services => 
+    public async Task InitializeAsync()
     {
-      services.RemoveContext<AuctionDbContext>();
+        await _postgreSqlContainer.StartAsync();
+    }
 
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services => 
+        {
+            services.RemoveDbContext<AuctionDbContext>();
 
-      services.AddDbContext<AuctionDbContext>(options => 
-      {
-        options.UseNpgsql(_postgreSqlContainer.GetConnectionString());
-      });
-      services.AddMassTransitTestHarness();
-      services.EnsureCreated<AuctionDbContext>();
-    });
-    base.ConfigureWebHost(builder);
-  }
+            services.AddDbContext<AuctionDbContext>(options =>
+            {
+                options.UseNpgsql(_postgreSqlContainer.GetConnectionString());
+            });
 
-  Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.DisposeAsync().AsTask();
+            services.AddMassTransitTestHarness();
+
+            services.EnsureCreated<AuctionDbContext>();
+
+            services.AddAuthentication(FakeJwtBearerDefaults.AuthenticationScheme)
+                .AddFakeJwtBearer(opt =>
+                {
+                    opt.BearerValueType = FakeJwtBearerBearerValueType.Jwt;
+                });
+        });
+    }
+
+    Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.DisposeAsync().AsTask();
+}
+
+internal class PostgresSqlContainer
+{
 }

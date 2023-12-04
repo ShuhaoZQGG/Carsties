@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AuctionService.IntegrationTest;
 public static class ServiceCollectionExtensions
 {
-  public static void RemoveContext<T>(this IServiceCollection services)
+  public static void RemoveDbContext<T>(this IServiceCollection services)
   {
     var descriptor = services.SingleOrDefault(
         d => d.ServiceType == typeof(DbContextOptions<AuctionDbContext>)
