@@ -98,7 +98,6 @@ public class AuctionControllerTests
     Assert.IsType<AuctionDto>(createdResult.Value);
   }
 
-  //TODO CreateAuction_WithResultFalse_ReturnsBadRequest()
   [Fact]
   public async Task CreateAuction_WithResultFalse_ReturnsBadRequestObjectResult() 
   {
@@ -116,7 +115,6 @@ public class AuctionControllerTests
     Assert.IsType<BadRequestObjectResult>(badRequestResult);  
   }
   
-  //TODO UpdateAuction_WithInvalidId_ReturnsNotFound()
   [Fact]
   public async Task UpdateAuction_WithInValidId_ReturnsNotFoundResult()
   {
@@ -131,7 +129,6 @@ public class AuctionControllerTests
     Assert.IsType<NotFoundResult>(result);
   }
   
-  //TODO UpdateAuction_WithSellerNull_ReturnsForbidden()
   [Fact]
   public async Task UpdateAuction_WithSellerNull_ReturnsForbidden() 
   {
@@ -151,7 +148,6 @@ public class AuctionControllerTests
     Assert.IsType<ForbidResult>(forbidResult);  
   }
 
-  //TODO UpdateAuction_WithResultFalse_ReturnsBadRequest()
   [Fact]
   public async Task UpdateAuction_WithResultFalse_ReturnsBadRequestObjectResult() 
   {
@@ -172,7 +168,6 @@ public class AuctionControllerTests
     Assert.IsType<BadRequestObjectResult>(badRequestObjectResult);  
   }
 
-  //TODO UpdateAuction_WithValidIdAndAuctionDto_ReturnsOk()
   [Fact]
   public async Task UpdateAuction_WithValidIdAndUpdateAuctionDto_ReturnsOk() 
   {
@@ -192,7 +187,6 @@ public class AuctionControllerTests
     Assert.IsType<OkResult>(result);  
   }
 
-  //TODO DeleteAuction_WithInvalidId_ReturnsNotFound()
   [Fact]
   public async Task DeleteAuction_WithInvalidId_ReturnsNotFound()
   {
@@ -208,7 +202,6 @@ public class AuctionControllerTests
   }
 
 
-  //TODO DeleteAuction_WithResultFalse_ReturnsBadRequest()
   [Fact]
   public async Task DeleteAuction_WithResultFalse_ReturnsBadRequest() 
   {
@@ -228,7 +221,6 @@ public class AuctionControllerTests
     Assert.IsType<BadRequestObjectResult>(badRequestObjectResult);  
   } 
 
-  //TODO RemoveAuction_WithSellerNull_ReturnsForbidden()
   [Fact]
   public async Task RemoveAuction_WithSellerNull_ReturnsForbidden() 
   {
@@ -247,7 +239,6 @@ public class AuctionControllerTests
     Assert.IsType<ForbidResult>(forbidResult);  
   }
 
-  //TODO DeleteAuction_WithValidIdAndAuctionDto_ReturnsOk()
   [Fact]
   public async Task DeleteAuction_WithValidIdAndAuctionDto_ReturnsOk() 
   {
