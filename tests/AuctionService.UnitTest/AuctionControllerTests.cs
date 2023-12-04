@@ -45,4 +45,32 @@ public class AuctionControllerTests
     Assert.Equal(10, result.Value.Count);
     Assert.IsType<ActionResult<List<AuctionDto>>>(result);
   }
+
+  [Fact]
+  public async Task GetAuctionById_WithValidGuid_ReturnsAuction()
+  {
+    // Arrange
+    var auction = _fixture.Create<AuctionDto>();
+    _repo.Setup(repo => repo.GetAuctionByIdAsync(It.IsAny<Guid>())).ReturnsAsync(auction);
+
+    // Act
+    var result = await _controller.GetAuctionById(auction.Id);
+
+    // Assert
+    Assert.Equal(auction.Make, result.Value.Make);
+    Assert.IsType<ActionResult<AuctionDto>>(result);
+  }
+
+    [Fact]
+  public async Task GetAuctionById_WithInValidGuid_ReturnsNotFound()
+  {
+    // Arrange
+    _repo.Setup(repo => repo.GetAuctionByIdAsync(It.IsAny<Guid>())).ReturnsAsync(value: null);
+
+    // Act
+    var result = await _controller.GetAuctionById(Guid.NewGuid());
+
+    // Assert
+    Assert.IsType<NotFoundResult>(result.Result);
+  }
 }
