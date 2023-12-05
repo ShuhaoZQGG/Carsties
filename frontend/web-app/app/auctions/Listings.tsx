@@ -1,21 +1,32 @@
-import React from 'react'
+'use client'
+import React, { useState, useEffect } from 'react'
 import AuctionCard from './AuctionCard';
 import { Auction, PagedResut } from '@/types';
-async function getData(): Promise<PagedResut<Auction>> {
-  const res = await fetch('http://localhost:6001/search?pageSize=10');
+import AddPagination from '../components/AddPagination';
+import { getData } from '../actions/auctionAction';
 
-  if (!res.ok) throw new Error('Failed to fetch data');
+export default function Navbar() {
+  const [auctions, setAuctions] = useState<Auction[]>([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  return res.json();
-}
-
-export default async function Navbar() {
-  const data = await getData();
+  useEffect(() => {
+    getData(pageNumber).then(data => {
+      setAuctions(data.results);
+      setPageCount(data.pageCount);
+    });
+  }, [pageNumber])
+  if (auctions.length === 0) return <h3>Loading...</h3>
   return (
-    <div className='grid grid-cols-4 gap-6'>
-      { data && data.results.map((auction: Auction) => (
-        <AuctionCard key={auction.id} auction={auction}/>
-      )) }
-    </div>
+    <>
+      <div className='grid grid-cols-4 gap-6'>
+        { auctions && auctions.map((auction: Auction) => (
+          <AuctionCard key={auction.id} auction={auction}/>
+        )) }
+      </div>
+      <div>
+        <AddPagination pageChanged={setPageNumber} currentPage={pageNumber} totalPages={pageCount}/>
+      </div>
+    </>
   )
 }
