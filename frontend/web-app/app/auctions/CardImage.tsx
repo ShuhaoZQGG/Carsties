@@ -23,7 +23,7 @@ export default function CardImage({ imageUrl }: Props) {
       `}
       sizes='(max-width:768px) 100vw, (max-width:1200px) 50vw, 25vw'
       priority
-      onLoadingComplete={() => setLoading(false)}
+      onLoad={() => setLoading(false)}
     />
   )
 }

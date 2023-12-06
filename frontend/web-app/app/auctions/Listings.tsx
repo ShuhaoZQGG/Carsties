@@ -4,28 +4,39 @@ import AuctionCard from './AuctionCard';
 import { Auction, PagedResut } from '@/types';
 import AddPagination from '../components/AddPagination';
 import { getData } from '../actions/auctionAction';
-
+import Filters from './Filters';
+import { useParamsStore } from '@/hooks/useParamsStore';
+import { shallow } from 'zustand/shallow';
+import qs from 'query-string';
 export default function Navbar() {
-  const [auctions, setAuctions] = useState<Auction[]>([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [data, setData] = useState<PagedResut<Auction>>();
+  const params = useParamsStore(state => ({
+    pageNumber: state.pageNumber,
+    pageSize: state.pageSize,
+    searchTerm: state.searchTerm
+  }), shallow);
+  const setParams = useParamsStore(state => state.setParams);
+  const url = qs.stringifyUrl({ url: '', query: params })
 
+  const setPageNumber = (pageNumber: number) => {
+    setParams({pageNumber});
+  }
   useEffect(() => {
-    getData(pageNumber).then(data => {
-      setAuctions(data.results);
-      setPageCount(data.pageCount);
+    getData(url).then(data => {
+      setData(data)
     });
-  }, [pageNumber])
-  if (auctions.length === 0) return <h3>Loading...</h3>
+  }, [url])
+  if (!data) return <h3>Loading...</h3>
   return (
     <>
+      <Filters/>
       <div className='grid grid-cols-4 gap-6'>
-        { auctions && auctions.map((auction: Auction) => (
+        { data.results.map((auction: Auction) => (
           <AuctionCard key={auction.id} auction={auction}/>
         )) }
       </div>
       <div>
-        <AddPagination pageChanged={setPageNumber} currentPage={pageNumber} totalPages={pageCount}/>
+        <AddPagination pageChanged={setPageNumber} currentPage={params.pageNumber} totalPages={data.pageCount}/>
       </div>
     </>
   )
