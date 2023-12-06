@@ -13,7 +13,8 @@ export default function Navbar() {
   const params = useParamsStore(state => ({
     pageNumber: state.pageNumber,
     pageSize: state.pageSize,
-    searchTerm: state.searchTerm
+    searchTerm: state.searchTerm,
+    orderBy: state.orderBy
   }), shallow);
   const setParams = useParamsStore(state => state.setParams);
   const url = qs.stringifyUrl({ url: '', query: params })
@@ -25,7 +26,7 @@ export default function Navbar() {
     getData(url).then(data => {
       setData(data)
     });
-  }, [url])
+  }, [url, setData])
   if (!data) return <h3>Loading...</h3>
   return (
     <>
