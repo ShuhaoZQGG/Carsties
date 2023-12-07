@@ -2,7 +2,7 @@ import React from 'react'
 
 type Props = {
   title: string
-  subTitle: string
+  subTitle?: string
   center?: boolean
 }
 
