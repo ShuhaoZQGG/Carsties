@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:7.0
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
     working_directory: ~/repo
 
     steps:
@@ -11,7 +11,7 @@ jobs:
 
       - run:
           name: Restore Dependencies
-          command: dotnet restore
+          command: dotnet restore src/AuctionService
 
       - run:
           name: Build and Watch AuctionService
@@ -19,7 +19,7 @@ jobs:
 
   test:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:7.0
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
     working_directory: ~/repo
 
     steps:
@@ -27,7 +27,7 @@ jobs:
 
       - run:
           name: Restore Dependencies
-          command: dotnet restore
+          command: dotnet restore src/AuctionService
 
       - run:
           name: Run Unit Tests
@@ -37,11 +37,32 @@ jobs:
           name: Run Integration Tests
           command: dotnet test tests/AuctionService.IntegrationTest
 
+  docker-compose-setup:
+    docker:
+      - image: docker:latest
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            apk --update add docker-compose
+            docker-compose --version
+
+      - run:
+          name: Run Docker Compose for Dependencies
+          command: docker-compose -f Carties/docker-compose.yml up -d
+
 workflows:
   version: 2
   build-and-test:
     jobs:
-      - build
+      - docker-compose-setup
+      - build:
+          requires:
+            - docker-compose-setup
       - test:
           requires:
             - build
