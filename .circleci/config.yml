@@ -27,6 +27,7 @@ jobs:
   #         command: docker-compose -f docker-compose.yml up -d
   build:
     docker:
+      - image: cimg/base:2023.12
       - image: mcr.microsoft.com/dotnet/sdk:7.0
     working_directory: ~/repo
 
