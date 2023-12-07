@@ -15,7 +15,7 @@ jobs:
 
       - run:
           name: Build and Watch AuctionService
-          command: dotnet watch src/AuctionService run
+          command: dotnet watch --project src/AuctionService run
 
   test:
     docker:
