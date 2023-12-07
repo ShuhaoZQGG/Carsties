@@ -9,7 +9,7 @@ jobs:
         auth:
           username: $DOCKERUSERNAME
           password: $DOCKERPASSWORD
-    working_directory: /app/src/AuctionService
+    working_directory: /app
 
     steps:
       - checkout
