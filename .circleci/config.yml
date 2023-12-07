@@ -52,11 +52,11 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run:
-          name: Install Docker Compose
-          command: |
-            apk --update add docker-compose
-            docker-compose --version
+      # - run:
+      #     name: Install Docker Compose
+      #     command: |
+      #       apk --update add docker-compose
+      #       docker-compose --version
       - run:
           name: Run Docker Compose for Dependencies
           command: docker-compose -f docker-compose.yml up -d
