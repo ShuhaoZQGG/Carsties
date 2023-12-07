@@ -9,7 +9,7 @@ jobs:
           docker_layer_caching: true
   docker-compose-setup:
     docker:
-      # - image: docker:latest
+      - image: docker:latest
       - image: mcr.microsoft.com/dotnet/sdk:7.0
     working_directory: ~/repo
 
