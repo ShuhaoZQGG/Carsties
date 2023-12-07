@@ -14,6 +14,7 @@ jobs:
           name: Deploy and Run Application
           command:  |
             docker login -u $DOCKERUSERNAME -p $DOCKERPASSWORD
+            sudo systemctl start docker
             docker pull shuhaozhang/auction-svc:latest
             docker run -d -p 7001:80 shuhaozhang/auction-svc:latest
             sleep 10
