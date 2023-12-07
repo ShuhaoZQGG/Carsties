@@ -25,21 +25,21 @@ jobs:
       - run:
           name: Run Docker Compose for Dependencies
           command: docker-compose -f docker-compose.yml up -d
-  # build:
-  #   docker:
-  #     - image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  #   working_directory: ~/repo
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
+    working_directory: ~/repo
 
-  #   steps:
-  #     - checkout
+    steps:
+      - checkout
 
-  #     - run:
-  #         name: Restore Dependencies
-  #         command: dotnet restore src/AuctionService
+      - run:
+          name: Restore Dependencies
+          command: dotnet restore src/AuctionService
 
-  #     - run:
-  #         name: Build and Watch AuctionService
-  #         command: dotnet watch --project src/AuctionService run
+      - run:
+          name: Build and Watch AuctionService
+          command: dotnet watch --project src/AuctionService run
 
   test:
     docker:
@@ -69,9 +69,9 @@ workflows:
       - docker-compose-setup:
           requires:
             - docker-setup
-      # - build:
-      #     requires:
-      #       - docker-compose-setup
-      - test:
+      - build:
           requires:
             - docker-compose-setup
+      - test:
+          requires:
+            - build
