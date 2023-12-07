@@ -1,10 +1,11 @@
 # circle ci configuration file
 version: 2.1
-
+orbs:
+  docker: circleci/docker@2.4.0
 jobs:
   build:
     docker:
-      - image: shuhaozhang/auction-svc
+      - image: circleci/node:14-browsers
         auth:
           username: $DOCKERUSERNAME
           password: $DOCKERPASSWORD
@@ -12,11 +13,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker-ce
       - run:
           name: Deploy and Run Application
           command:  |
