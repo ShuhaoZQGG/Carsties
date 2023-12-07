@@ -72,4 +72,6 @@ workflows:
       # - build:
       #     requires:
       #       - docker-compose-setup
-      - test
+      - test:
+          requires:
+            - docker-compose-setup
