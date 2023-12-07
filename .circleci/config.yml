@@ -1,29 +1,47 @@
-# circle ci configuration file
 version: 2.1
-# orbs:
-#   docker: circleci/docker@1.4.0
+
 jobs:
   build:
     docker:
-      - image: cimg/base:2023.12
-      - image: shuhaozhang/auction-svc:latest
-        auth:
-          username: $DOCKERUSERNAME
-          password: $DOCKERPASSWORD
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
+    working_directory: ~/repo
+
     steps:
       - checkout
-      - run:
-          name: Run Application
-          command: |
-            docker run -d -p 7001:80 shuhaozhang/auction-svc:latest
-      # - docker/check:
-      #     docker-username: $DOCKERUSERNAME
-      #     docker-password: $DOCKERPASSWORD
-      # - docker/pull:
 
+      - run:
+          name: Restore Dependencies
+          command: dotnet restore
+
+      - run:
+          name: Build and Watch AuctionService
+          command: dotnet watch src/AuctionService run
+
+  test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Restore Dependencies
+          command: dotnet restore
+
+      - run:
+          name: Run Unit Tests
+          command: dotnet test tests/AuctionService.UnitTest
+
+      - run:
+          name: Run Integration Tests
+          command: dotnet test tests/AuctionService.IntegrationTest
 
 workflows:
   version: 2
-  build_and_run:
+  build-and-test:
     jobs:
       - build
+      - test:
+          requires:
+            - build
