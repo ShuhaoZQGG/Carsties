@@ -1,6 +1,29 @@
 version: 2.1
 
 jobs:
+  docker-setup:
+    docker:
+      - image: cimg/base:2023.12
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+  docker-compose-setup:
+    docker:
+      - image: docker:latest
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            apk --update add docker-compose
+            docker-compose --version
+
+      - run:
+          name: Run Docker Compose for Dependencies
+          command: docker-compose -f docker-compose.yml up -d
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -37,29 +60,14 @@ jobs:
           name: Run Integration Tests
           command: dotnet test tests/AuctionService.IntegrationTest
 
-  docker-compose-setup:
-    docker:
-      - image: docker:latest
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install Docker Compose
-          command: |
-            apk --update add docker-compose
-            docker-compose --version
-
-      - run:
-          name: Run Docker Compose for Dependencies
-          command: docker-compose -f docker-compose.yml up -d
-
 workflows:
   version: 2
   build-and-test:
     jobs:
-      - docker-compose-setup
+      - docker-setup
+      - docker-compose-setup:
+          requires:
+            - docker-setup
       - build:
           requires:
             - docker-compose-setup
