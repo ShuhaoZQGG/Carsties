@@ -1,19 +1,19 @@
 # circle ci configuration file
 version: 2.1
-orbs:
-  docker: circleci/docker@2.4.0
 jobs:
   build:
     docker:
-      - image: circleci/node:14-browsers
-        auth:
-          username: $DOCKERUSERNAME
-          password: $DOCKERPASSWORD
+      - image: cimg/base:2023.12
+      # - image: shuhaozhang/auction-svc:latest
+      #   auth:
+      #     username: $DOCKERUSERNAME
+      #     password: $DOCKERPASSWORD
     steps:
       - checkout
       - run:
           name: Deploy and Run Application
           command:  |
+            docker login -u $DOCKERUSERNAME -p $DOCKERPASSWORD
             docker pull shuhaozhang/auction-svc:latest
             docker run -d -p 7001:80 shuhaozhang/auction-svc:latest
             sleep 10
