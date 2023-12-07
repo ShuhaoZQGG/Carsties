@@ -1,23 +1,26 @@
 # circle ci configuration file
 version: 2.1
+# orbs:
+#   docker: circleci/docker@1.4.0
 jobs:
   build:
     docker:
       - image: cimg/base:2023.12
-      # - image: shuhaozhang/auction-svc:latest
-      #   auth:
-      #     username: $DOCKERUSERNAME
-      #     password: $DOCKERPASSWORD
+      - image: shuhaozhang/auction-svc:latest
+        auth:
+          username: $DOCKERUSERNAME
+          password: $DOCKERPASSWORD
     steps:
       - checkout
       - run:
-          name: Deploy and Run Application
-          command:  |
-            docker login -u $DOCKERUSERNAME -p $DOCKERPASSWORD
-            sudo systemctl start docker
-            docker pull shuhaozhang/auction-svc:latest
+          name: Run Application
+          command: |
             docker run -d -p 7001:80 shuhaozhang/auction-svc:latest
-            sleep 10
+      # - docker/check:
+      #     docker-username: $DOCKERUSERNAME
+      #     docker-password: $DOCKERPASSWORD
+      # - docker/pull:
+
 
 workflows:
   version: 2
