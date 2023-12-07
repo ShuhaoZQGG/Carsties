@@ -1,0 +1,26 @@
+# circle ci configuration file
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: shuhaozhang/auction-svc
+        auth:
+          username: $DOCKERUSERNAME
+          password: $DOCKERPASSWORD
+    working_directory: /app/src/AuctionService
+
+    steps:
+      - checkout
+      - run:
+          name: Deploy and Run Application
+          command:  |
+            docker pull shuhaozhang/auction-svc:latest
+            docker run -d -p 7001:80 shuhaozhang/auction-svc:latest
+            sleep 10
+
+workflows:
+  version: 2
+  build_and_run:
+    jobs:
+      - build
