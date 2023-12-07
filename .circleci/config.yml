@@ -1,30 +1,30 @@
 version: 2.1
 
 jobs:
-  docker-setup:
-    docker:
-      - image: cimg/base:2023.12
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-  docker-compose-setup:
-    docker:
-      - image: docker:latest
-    working_directory: ~/repo
+  # docker-setup:
+  #   docker:
+  #     - image: cimg/base:2023.12
+  #   steps:
+  #     - setup_remote_docker:
+  #         docker_layer_caching: true
+  # docker-compose-setup:
+  #   docker:
+  #     - image: docker:latest
+  #   working_directory: ~/repo
 
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Install Docker Compose
-          command: |
-            apk --update add docker-compose
-            docker-compose --version
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker:
+  #         docker_layer_caching: true
+  #     - run:
+  #         name: Install Docker Compose
+  #         command: |
+  #           apk --update add docker-compose
+  #           docker-compose --version
 
-      - run:
-          name: Run Docker Compose for Dependencies
-          command: docker-compose -f docker-compose.yml up -d
+  #     - run:
+  #         name: Run Docker Compose for Dependencies
+  #         command: docker-compose -f docker-compose.yml up -d
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:7.0
@@ -51,6 +51,11 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
+          name: Install Docker Compose
+          command: |
+            apk --update add docker-compose
+            docker-compose --version
+      - run:
           name: Run Docker Compose for Dependencies
           command: docker-compose -f docker-compose.yml up -d
       - run:
@@ -69,13 +74,11 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - docker-setup
-      - docker-compose-setup:
-          requires:
-            - docker-setup
+      # - docker-setup
+      # - docker-compose-setup:
+      #     requires:
+      #       - docker-setup
       # - build:
       #     requires:
       #       - docker-compose-setup
-      - test:
-          requires:
-            - docker-compose-setup
+      - test
