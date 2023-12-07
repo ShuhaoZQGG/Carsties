@@ -10,7 +10,6 @@ jobs:
   docker-compose-setup:
     docker:
       - image: docker:latest
-      - image: mcr.microsoft.com/dotnet/sdk:7.0
     working_directory: ~/repo
 
     steps:
@@ -26,49 +25,41 @@ jobs:
       - run:
           name: Run Docker Compose for Dependencies
           command: docker-compose -f docker-compose.yml up -d
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Restore Dependencies
+          command: dotnet restore src/AuctionService
+
+      - run:
+          name: Build and Watch AuctionService
+          command: dotnet watch --project src/AuctionService run
+
+  test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Restore Dependencies
+          command: dotnet restore src/AuctionService
 
       - run:
           name: Run Unit Tests
           command: dotnet test tests/AuctionService.UnitTest
 
-      - run:
-          name: Run Integration Tests
-          command: dotnet test tests/AuctionService.IntegrationTest
-  # build:
-  #   docker:
-  #     - image: mcr.microsoft.com/dotnet/sdk:7.0
-  #   working_directory: ~/repo
-
-  #   steps:
-  #     - checkout
-
-  #     - run:
-  #         name: Restore Dependencies
-  #         command: dotnet restore src/AuctionService
-
-  #     - run:
-  #         name: Build and Watch AuctionService
-  #         command: dotnet watch --project src/AuctionService run
-
-  # test:
-  #   docker:
-  #     - image: mcr.microsoft.com/dotnet/sdk:7.0
-  #   working_directory: ~/repo
-
-  #   steps:
-  #     - checkout
-
-  #     - run:
-  #         name: Restore Dependencies
-  #         command: dotnet restore src/AuctionService
-
-  #     - run:
-  #         name: Run Unit Tests
-  #         command: dotnet test tests/AuctionService.UnitTest
-
-  #     - run:
-  #         name: Run Integration Tests
-  #         command: dotnet test tests/AuctionService.IntegrationTest
+      # - run:
+      #     name: Run Integration Tests
+      #     command: dotnet test tests/AuctionService.IntegrationTest
 
 workflows:
   version: 2
@@ -78,9 +69,9 @@ workflows:
       - docker-compose-setup:
           requires:
             - docker-setup
-      # - build:
-      #     requires:
-      #       - docker-compose-setup
-      # - test:
-      #     requires:
-      #       - build
+      - build:
+          requires:
+            - docker-compose-setup
+      - test:
+          requires:
+            - build
