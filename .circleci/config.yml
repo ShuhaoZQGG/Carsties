@@ -48,7 +48,11 @@ jobs:
 
     steps:
       - checkout
-
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Run Docker Compose for Dependencies
+          command: docker-compose -f docker-compose.yml up -d
       - run:
           name: Restore Dependencies
           command: dotnet restore src/AuctionService
@@ -57,9 +61,9 @@ jobs:
           name: Run Unit Tests
           command: dotnet test tests/AuctionService.UnitTest
 
-      # - run:
-      #     name: Run Integration Tests
-      #     command: dotnet test tests/AuctionService.IntegrationTest
+      - run:
+          name: Run Integration Tests
+          command: dotnet test tests/AuctionService.IntegrationTest
 
 workflows:
   version: 2
@@ -69,9 +73,9 @@ workflows:
       - docker-compose-setup:
           requires:
             - docker-setup
-      - build:
-          requires:
-            - docker-compose-setup
+      # - build:
+      #     requires:
+      #       - docker-compose-setup
       - test:
           requires:
-            - build
+            - docker-compose-setup
