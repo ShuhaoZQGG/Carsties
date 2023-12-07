@@ -53,7 +53,7 @@ jobs:
 
       - run:
           name: Run Docker Compose for Dependencies
-          command: docker-compose -f Carties/docker-compose.yml up -d
+          command: docker-compose -f docker-compose.yml up -d
 
 workflows:
   version: 2
