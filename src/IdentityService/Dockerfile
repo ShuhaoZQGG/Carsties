@@ -14,6 +14,7 @@ COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
 COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.csproj
+COPY src/NotificationService/NotificationService.csproj src/NotificationService/NotificationService.csproj
 COPY tests/AuctionService.UnitTest/AuctionService.UnitTest.csproj tests/AuctionService.UnitTest/AuctionService.UnitTest.csproj
 COPY tests/AuctionService.IntegrationTest/AuctionService.IntegrationTest.csproj tests/AuctionService.IntegrationTest/AuctionService.IntegrationTest.csproj
 # Restore package deps
