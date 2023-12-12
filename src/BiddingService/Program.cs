@@ -33,6 +33,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     opt.TokenValidationParameters.ValidateAudience = false;
     opt.TokenValidationParameters.NameClaimType = "username";
   });
+
+  builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 var app = builder.Build();
