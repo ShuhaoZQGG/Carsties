@@ -35,6 +35,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   });
 
   builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+  builder.Services.AddHostedService<CheckAuctionFinished>();
+  builder.Services.AddScoped<GrpcAuctionClient>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 var app = builder.Build();
