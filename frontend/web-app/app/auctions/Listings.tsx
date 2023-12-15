@@ -9,8 +9,10 @@ import { useParamsStore } from '@/hooks/useParamsStore';
 import { shallow } from 'zustand/shallow';
 import qs from 'query-string';
 import EmptyFilter from '../components/EmptyFilter';
+import { useAuctionStore } from '@/hooks/useAuctionStore';
 export default function Navbar() {
-  const [data, setData] = useState<PagedResut<Auction>>();
+  const [loading, setLoading] = useState(true);
+
   const params = useParamsStore(state => ({
     pageNumber: state.pageNumber,
     pageSize: state.pageSize,
@@ -21,6 +23,14 @@ export default function Navbar() {
     winner: state.winner
   }), shallow);
   const setParams = useParamsStore(state => state.setParams);
+
+  const data = useAuctionStore(state => ({
+    auctions: state.auctions,
+    totalCount: state.totalCount,
+    pageCount: state.pageCount,
+  }), shallow);
+  const setData = useAuctionStore(state => state.setData);
+
   const url = qs.stringifyUrl({ url: '', query: params })
 
   const setPageNumber = (pageNumber: number) => {
@@ -29,9 +39,10 @@ export default function Navbar() {
   useEffect(() => {
     getData(url).then(data => {
       setData(data)
+      setLoading(false);
     });
   }, [url, setData])
-  if (!data) return <h3>Loading...</h3>
+  if (loading) return <h3>Loading...</h3>
   return (
     <>
       <Filters/>
@@ -40,7 +51,7 @@ export default function Navbar() {
       ) : (
         <>
           <div className='grid grid-cols-4 gap-6'>
-          { data.results.map((auction: Auction) => (
+          { data.auctions.map((auction: Auction) => (
             <AuctionCard key={auction.id} auction={auction}/>
           )) }
           </div>

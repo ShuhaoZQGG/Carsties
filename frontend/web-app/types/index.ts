@@ -7,3 +7,4 @@ export type PagedResut<T> = {
 }
 
 export * from './auctions'
+export * from './bids'
