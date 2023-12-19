@@ -100,7 +100,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
       - VIRTUAL_HOST=api.carsties.com
-      - ClientApp=http://app.carsties.com
+      - ClientApp=https://app.carsties.com
     networks:
       custom:
   bid-svc:
