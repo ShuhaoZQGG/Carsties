@@ -1,7 +1,7 @@
 import { Bid } from '@/types'
 import React from 'react'
 import { format } from 'date-fns';
-import { numberWithCommas } from '@/lib/numberWithComma';
+import { numberWithCommas } from '@/app/lib/numberWithComma';
 type Props = {
   bid: Bid
 }
