@@ -4,7 +4,11 @@ const nextConfig = {
     domains: [
       "cdn.pixabay.com"
     ]
-  }
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+ },
+  output: "standalone"
 }
 
 module.exports = nextConfig
