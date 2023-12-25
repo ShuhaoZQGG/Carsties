@@ -1,3 +1,6 @@
 {
-  "dotnet.defaultSolution": "Carsties.sln"
+  "dotnet.defaultSolution": "Carsties.sln",
+  "vs-kubernetes": {
+    "disable-linters": ["resource-limits"]
+  }
 }
