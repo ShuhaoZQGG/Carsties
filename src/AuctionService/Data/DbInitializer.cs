@@ -18,7 +18,7 @@ public class DbInitializer
 
     if (context.Auctions.Any()) 
     {
-      Console.WriteLine("Already have data - no need to see");
+      Console.WriteLine("Already have data - no need to seed");
       return;
     }
 
