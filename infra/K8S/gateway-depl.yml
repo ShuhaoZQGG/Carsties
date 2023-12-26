@@ -18,6 +18,8 @@ spec:
         env:
           - name: ClientApp
             value: https://app.carsties.com
+          - name: IdentityServiceUrl
+            value: https://id.carsties.zshqgg.me
 ---
 apiVersion: v1
 kind: Service
