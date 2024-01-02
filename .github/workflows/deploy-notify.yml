@@ -1,16 +1,16 @@
-name: deploy-auction
+name: deploy-search
 
 on:
   workflow_dispatch: 
   push:
     branches: [ "main" ]
     paths:
-      - 'src/AuctionService/**'
+      - 'src/NotificationService/**'
 
 env:
-  REGISTRY_IMAGE: shuhaozhang/auction-svc
-  DOCKERFILE: src/AuctionService/DockerFile
-  DEPLOYMENT_NAME: auction-svc
+  REGISTRY_IMAGE: shuhaozhang/notify-svc
+  DOCKERFILE: src/NotificationService/DockerFile
+  DEPLOYMENT_NAME: notify-svc
 
 jobs:
   build:
