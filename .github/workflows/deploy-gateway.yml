@@ -1,4 +1,4 @@
-name: deploy-search
+name: deploy-gateway
 
 on:
   workflow_dispatch: 

@@ -1,4 +1,4 @@
-name: deploy-search
+name: deploy-bid
 
 on:
   workflow_dispatch: 
