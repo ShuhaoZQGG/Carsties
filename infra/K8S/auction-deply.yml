@@ -19,11 +19,20 @@ spec:
           - name: RabbitMq__Host
             value: rabbit-clusterip
           - name: RabbitMq__Username
-            value: rabbit
+            valueFrom:
+              secretKeyRef:
+                name: auction-secret
+                key: rabbitUn
           - name: RabbitMq__Password
-            value: rabbit
+            valueFrom:
+              secretKeyRef:
+                name: auction-secret
+                key: rabbitPw
           - name: ConnectionStrings__DefaultConnection
-            value: Server=postgres-clusterip;User Id=postgres;Password=postgrespw;Database=auctions
+            valueFrom:
+              secretKeyRef:
+                name: auction-secret
+                key: connString
           - name: IdentityServiceUrl
             value: https://id.carsties.zshqgg.me
           - name: Kestrel__Endpoints__Grpc__Protocols
