@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY_IMAGE: shuhaozhang/auction-svc
-  DOCKERFILE: src/AuctionService/DockerFile
+  DOCKERFILE: src/AuctionService/Dockerfile
   DEPLOYMENT_NAME: auction-svc
 
 jobs:

@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY_IMAGE: shuhaozhang/notify-svc
-  DOCKERFILE: src/NotificationService/DockerFile
+  DOCKERFILE: src/NotificationService/Dockerfile
   DEPLOYMENT_NAME: notify-svc
 
 jobs:

@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY_IMAGE: shuhaozhang/web-app
-  DOCKERFILE: frontend/web-app/DockerFile
+  DOCKERFILE: frontend/web-app/Dockerfile
   DEPLOYMENT_NAME: webapp
 
 jobs:

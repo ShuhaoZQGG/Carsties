@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY_IMAGE: shuhaozhang/search-svc
-  DOCKERFILE: src/SearchService/DockerFile
+  DOCKERFILE: src/SearchService/Dockerfile
   DEPLOYMENT_NAME: search-svc
 
 jobs:

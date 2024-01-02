@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY_IMAGE: shuhaozhang/gateway-svc
-  DOCKERFILE: src/GatewayService/DockerFile
+  DOCKERFILE: src/GatewayService/Dockerfile
   DEPLOYMENT_NAME: gateway-svc
 
 jobs:
