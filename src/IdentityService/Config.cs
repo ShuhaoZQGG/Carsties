@@ -20,24 +20,24 @@ public static class Config
     public static IEnumerable<Client> Clients(IConfiguration config) =>
         new Client[]
         {
-            new Client
-            {
-              ClientId = "postman",
-              ClientName ="Postman",
-              AllowedScopes = { "openid", "profile", "auctionApp" },
-              // whatever, it won't redirect since it's for postman
-              RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
-              ClientSecrets = new [] 
-                {
-                  new Secret("NotASecret".Sha256())
-                },
-              AllowedGrantTypes = { GrantType.ResourceOwnerPassword }
-            },
+            // new Client
+            // {
+            //   ClientId = "postman",
+            //   ClientName ="Postman",
+            //   AllowedScopes = { "openid", "profile", "auctionApp" },
+            //   // whatever, it won't redirect since it's for postman
+            //   RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
+            //   ClientSecrets = new [] 
+            //     {
+            //       new Secret("NotASecret".Sha256())
+            //     },
+            //   AllowedGrantTypes = { GrantType.ResourceOwnerPassword }
+            // },
             new Client
             {
               ClientId = "nextApp",
               ClientName = "nextApp",
-              ClientSecrets = { new Secret("secret".Sha256()) },
+              ClientSecrets = { new Secret(config["ClientSecret"].Sha256()) },
               AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
               RequirePkce = false,
               RedirectUris = { config["ClientApp"] + "/api/auth/callback/id-server" },
