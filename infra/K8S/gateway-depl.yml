@@ -17,7 +17,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: ClientApp
-            value: https://app.carsties.com
+            value: https://app.carsties.tech
           - name: IdentityServiceUrl
             value: https://id.carsties.zshqgg.me
 ---
